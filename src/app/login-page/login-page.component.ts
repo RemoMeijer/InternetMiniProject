@@ -3,12 +3,14 @@ import firebase from "firebase/compat";
 import Firestore = firebase.firestore.Firestore;
 import {FirestoreService} from "../firestore.service";
 import {FormsModule} from "@angular/forms";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    NgIf
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import firebase from "firebase/compat/app";
 import initializeApp = firebase.initializeApp;
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import {resolve} from "@angular/compiler-cli";
+import { getFirestore, doc, setDoc, query, where, getDocs, getDoc, collection } from "firebase/firestore"
 
 
 @Injectable({
@@ -22,19 +22,15 @@ export class FirestoreService {
   private readonly app: any;
   private auth: any;
   private loggedUser: any;
+  private db: any;
 
   constructor() {
     this.app = initializeApp(this.firebaseConfig);
     this.auth = getAuth(this.app)
     onAuthStateChanged(this.auth, (user) => {
       this.loggedUser = user;
-    })
-  }
-
-  getAuth(){
-    if (this.auth != null) {
-      return this.auth;
-    }
+    });
+    this.db = getFirestore(this.app)
   }
 
   async newUser(email: string, password: string): Promise<Boolean> {
@@ -62,6 +58,23 @@ export class FirestoreService {
       return false;
     }
   }
+
+  async addRecipe(int : number, recipe: string){
+    await setDoc(doc(this.db, "users", this.loggedUser.uid, "Recipes", recipe + int),{
+      recipe: recipe,
+      description: "Lekkere appeltaart!!",
+    });
+  }
+
+  async getAllRecipes() {
+    console.log("getting shit")
+    const q = query(collection(this.db, "users"))
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data())
+    });
+  }
+
 }
 
 

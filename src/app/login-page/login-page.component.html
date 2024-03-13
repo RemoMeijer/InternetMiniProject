@@ -1,18 +1,15 @@
-<div>
-  <h2>Login</h2>
-  <form (ngSubmit)="signIn(email, password)">
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" [(ngModel)]="email" required>
+<div class="container mx-auto px-4 py-8">
+  <form (ngSubmit)="signIn(email, password)" class="flex flex-col space-y-4">
+    <div class="flex items-center">
+      <label for="email" class="w-1/4 text-sm font-medium">Email:</label>
+      <input type="email" id="email" name="email" [(ngModel)]="email" required class="flex-grow px-2 py-1 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
     </div>
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" [(ngModel)]="password" required>
+    <div class="flex items-center">
+      <label for="password" class="w-1/4 text-sm font-medium">Password:</label>
+      <input type="password" id="password" name="password" [(ngModel)]="password" required class="flex-grow px-2 py-1 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
     </div>
-    <button type="submit">Login</button>
+    <button type="submit" class="btn btn-primary border border-gray-500">Login</button>
   </form>
-  <button (click)="makeUser(email, password)">New User</button>
-  <div>
-    {{ success }}
-  </div>
+  <button (click)="makeUser(email, password)" class="mt-4 btn btn-outline border border-gray-500 ">New User</button>
+  <div *ngIf="success" class="mt-4 text-green-500">{{ success }}</div>
 </div>
