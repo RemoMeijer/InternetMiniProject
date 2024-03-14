@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "internettechnologieminiproject": {
+      "hosting": {
+        "internettechnologie": [
+          "internettechnologieminiproject"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "internettechnologieminiproject"
+  }
+}

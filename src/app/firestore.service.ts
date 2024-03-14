@@ -3,6 +3,7 @@ import firebase from "firebase/compat/app";
 import initializeApp = firebase.initializeApp;
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, setDoc, query, where, getDocs, getDoc, collection } from "firebase/firestore"
+import {Recipe} from "./objects/recipe";
 
 
 @Injectable({
@@ -20,10 +21,16 @@ export class FirestoreService {
   };
 
   private readonly app: any;
-  private auth: any;
+  private readonly auth: any;
   private loggedUser: any;
-  private db: any;
+  private readonly db: any;
 
+
+  getLoggedUser(){
+    if (this.loggedUser != null) {
+      return this.loggedUser;
+    }
+  }
   constructor() {
     this.app = initializeApp(this.firebaseConfig);
     this.auth = getAuth(this.app)
@@ -59,20 +66,22 @@ export class FirestoreService {
     }
   }
 
-  async addRecipe(int : number, recipe: string){
-    await setDoc(doc(this.db, "users", this.loggedUser.uid, "Recipes", recipe + int),{
-      recipe: recipe,
-      description: "Lekkere appeltaart!!",
+  async addRecipe(recipe: Recipe){
+    await setDoc(doc(this.db, "recipes", recipe.id + ""),{
+      recipe: recipe.recipe,
+      description: recipe.description,
+      id: recipe.id,
+      uid: recipe.uid
     });
   }
 
   async getAllRecipes() {
-    console.log("getting shit")
-    const q = query(collection(this.db, "users"))
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data())
-    });
+    const recipeList: Recipe[] = []
+     const querySnapshot = await getDocs(collection(this.db, "recipes"));
+     querySnapshot.forEach( (doc) => {
+       recipeList.push(doc.data() as Recipe)
+     })
+    return recipeList
   }
 
 }

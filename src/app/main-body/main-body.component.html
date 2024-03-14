@@ -1,3 +1,5 @@
-<p>main-body works!</p>
-<button (click)="createRecipe()">Create appeltaart!</button>
+<div class="flex justify-center" *ngFor="let recipe of recipeList">
+  <div class="p-4 bg-gray-200 rounded-md w-1/2 my-5" [routerLink]="['/recipe', recipe.id]">{{recipe.description}}</div>
+</div>
+<button (click)="createRecipe()">Create!</button>
 <button (click)="getRecipes()">Get all!</button>
