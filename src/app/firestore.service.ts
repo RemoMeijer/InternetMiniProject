@@ -1,11 +1,16 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import firebase from "firebase/compat/app";
-import initializeApp = firebase.initializeApp;
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, doc, setDoc, query, where, getDocs, getDoc, collection } from "firebase/firestore"
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut
+} from "firebase/auth";
+import {collection, doc, getDocs, getFirestore, setDoc} from "firebase/firestore"
 import {Recipe} from "./objects/recipe";
 import {BehaviorSubject} from "rxjs";
-
+import initializeApp = firebase.initializeApp;
 
 @Injectable({
   providedIn: 'root'
@@ -77,12 +82,18 @@ export class FirestoreService {
   }
 
   async addRecipe(recipe: Recipe){
-    await setDoc(doc(this.db, "recipes", recipe.id + ""),{
-      recipe: recipe.recipe,
-      description: recipe.description,
-      id: recipe.id,
-      uid: recipe.uid
-    });
+    try {
+      await setDoc(doc(this.db, "recipes", recipe.id + ""),{
+        recipe: recipe.recipe,
+        description: recipe.description,
+        id: recipe.id,
+        uid: recipe.uid
+      });
+      return true;
+    } catch (error) {
+      console.log(error)
+      return false;
+    }
   }
 
   async getAllRecipes() {
@@ -94,6 +105,15 @@ export class FirestoreService {
     return recipeList
   }
 
+  async logOut() {
+    try {
+      await signOut(this.auth);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false
+    }
+  }
 }
 
 

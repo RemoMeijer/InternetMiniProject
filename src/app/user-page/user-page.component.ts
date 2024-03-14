@@ -26,17 +26,28 @@ export class UserPageComponent implements OnInit {
     }
   }
 
-  createRecipe(recipeName: string, recipeDescription: string) {
+  async createRecipe(recipeName: string, recipeDescription: string) {
     let recipe: Recipe = {
       recipe: recipeName,
       description: recipeDescription,
       id: Math.floor(Math.random() * 100000),
       uid: this.firestoreService.getLoggedUser().uid
     }
-    this.firestoreService.addRecipe(recipe);
+    let successful = await this.firestoreService.addRecipe(recipe);
+    if (successful) {
+      console.log("Recipe created")
+      this.route.navigate(['user', this.firestoreService.getLoggedUser().uid])
+    } else {
+      console.log("Failed to make recipe")
+    }
   }
 
 
-
-
+  logOut() {
+    this.firestoreService.logOut().then(r => {
+      if (r) {
+        this.route.navigate(['']);
+      }
+    })
+  }
 }

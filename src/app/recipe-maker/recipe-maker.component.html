@@ -1,1 +1,23 @@
-<p>recipe-maker works!</p>
+<form [formGroup]="recipeForm" (ngSubmit)="submitRecipe()" class="flex flex-col space-y-4">
+  <div class="flex items-center my-4 mx-5">
+    <label for="recipe" class="w-1/4 text-gray-700 font-medium">Recipe Name:</label>
+    <input type="text" id="recipe" formControlName="recipe" required class="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+    <div *ngIf="recipeForm.get('recipe')?.hasError('required')" class="text-red-500 text-sm ms-4">
+      Recipe name is required!
+    </div>
+  </div>
+
+  <div class="flex items-center mx-5">
+    <label for="description" class="w-1/4 text-gray-700 font-medium">Description:</label>
+    <textarea id="description" formControlName="description" required class="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500" rows="4"></textarea>
+    <div *ngIf="recipeForm.get('description')?.hasError('required')" class="text-red-500 text-sm ms-4">
+      Description is required!
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3">
+    <div></div>
+    <button type="submit" class=" py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md font-medium w-full ">Create Recipe</button>
+    <div></div>
+  </div>
+</form>
