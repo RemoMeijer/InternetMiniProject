@@ -108,6 +108,10 @@ export class FirestoreService {
     return recipeList
   }
 
+  async getMainPageRecipe(searchTerm: string) {
+
+  }
+
   async logOut() {
     try {
       await signOut(this.auth);
