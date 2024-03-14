@@ -13,9 +13,12 @@ import {FirestoreService} from "../firestore.service";
 export class RecipeDetailPageComponent implements OnInit {
   protected recipe: Recipe = {
     id: 0,
-    description: '',
     uid: '',
-    recipe: ''
+    recipeName: '',
+    description: '',
+    ingredients: [],
+    steps: [],
+    tags: []
   };
 
   private recipeID: number = 0;

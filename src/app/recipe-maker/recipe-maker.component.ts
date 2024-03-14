@@ -1,30 +1,45 @@
 import {Component, OnInit} from '@angular/core';
 import {FirestoreService} from "../firestore.service";
 import {Router} from "@angular/router";
-import {Recipe} from "../objects/recipe";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {NgIf} from "@angular/common";
+import {Ingredient, Recipe} from "../objects/recipe";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {NgForOf, NgIf} from "@angular/common";
+import {isEmpty} from "rxjs";
 
 @Component({
   selector: 'app-recipe-maker',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    FormsModule,
+    NgForOf
   ],
   templateUrl: './recipe-maker.component.html',
   styleUrl: './recipe-maker.component.css'
 })
 export class RecipeMakerComponent implements OnInit {
+  protected recipe: Recipe = {
+    id: NaN,
+    uid: '',
+    recipeName: '',
+    description: '',
+    ingredients: [],
+    steps: [],
+    tags: [],
+  }
 
-  recipeForm: FormGroup = this.fb.group({
-    recipe: ['', Validators.required],
-    description: ['', Validators.required]
-  });
+  protected currentIngredient: Ingredient = {
+    ingredient: '',
+    amount: NaN,
+    unit: '',
+  }
+
+  protected step: string = "";
+  protected tag: string = "";
 
   constructor(private fireStoreService: FirestoreService,
-              private router: Router,
-              private fb: FormBuilder) {}
+              private router: Router) {}
 
 
   ngOnInit(): void {
@@ -34,20 +49,20 @@ export class RecipeMakerComponent implements OnInit {
   }
 
  submitRecipe(){
-    if (this.recipeForm?.valid) {
-      const recipe = this.recipeForm.value;
-      this.createRecipe(recipe.recipe, recipe.description)
-    }
+    this.createRecipe(this.recipe)
  }
 
-  async createRecipe(recipeName: string, recipeDescription: string) {
-    let recipe: Recipe = {
-      recipe: recipeName,
-      description: recipeDescription,
+  async createRecipe(recipe: Recipe) {
+    let fullRecipe: Recipe = {
       id: Math.floor(Math.random() * 100000),
-      uid: this.fireStoreService.getLoggedUser().uid
+      uid: this.fireStoreService.getLoggedUser().uid,
+      recipeName: recipe.recipeName,
+      description: recipe.description,
+      ingredients: recipe.ingredients,
+      steps: recipe.steps,
+      tags: recipe.tags,
     }
-    let successful = await this.fireStoreService.addRecipe(recipe);
+    let successful: boolean = await this.fireStoreService.addRecipe(fullRecipe);
     if (successful) {
       console.log("Recipe created")
       this.router.navigate(['user', this.fireStoreService.getLoggedUser().uid])
@@ -56,4 +71,37 @@ export class RecipeMakerComponent implements OnInit {
     }
   }
 
+  addIngredients() {
+    // if (this.currentIngredient.ingredient != "" &&
+    //     this.currentIngredient.amount !<= 0) {
+
+      this.recipe.ingredients.push(this.currentIngredient);
+
+      this.currentIngredient = {
+        ingredient: '',
+        amount: -1,
+        unit: '',
+      };
+    // } else {
+    //   console.error("Invalid ingredient")
+    // }
+  }
+
+  addStep() {
+    if(this.step != '') {
+      this.recipe.steps.push(this.step)
+      this.step = '';
+    } else {
+      console.error("Invalid step")
+    }
+  }
+
+  addTag() {
+    if (this.tag != "") {
+      this.recipe.tags.push(this.tag)
+      this.tag = ""
+    } else {
+      console.error("Invalid tag!")
+    }
+  }
 }

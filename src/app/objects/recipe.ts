@@ -1,6 +1,15 @@
 export interface Recipe {
   id: number,
   uid: string,
-  recipe: string,
-  description: string
+  recipeName: string,
+  description: string,
+  ingredients: Ingredient[],
+  steps: string[],
+  tags: string[]
+}
+
+export interface Ingredient {
+  ingredient: string;
+  amount: number;
+  unit: string;
 }

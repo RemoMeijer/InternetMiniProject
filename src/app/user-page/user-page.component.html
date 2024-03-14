@@ -1,2 +1,23 @@
-<h1>Hello user {{user.uid}}</h1>
-<button (click)="logOut()">Log Out</button>
+<div class="flex items-center justify-between mb-10 mt-5 ms-4">
+  <h1 class="text-2xl font-medium text-gray-700">Hello, {{ user.name }}</h1>
+  <img class="w-5 h-5 cursor-pointer me-5" ngSrc="assets/settings.png" alt="User settings" (click)="goToUserSettings()"
+       height="2295" width="2295">
+</div>
+<div class="grid grid-cols-2 ms-4 me-5">
+  <div>
+    <p class="text-gray-600 mb-4">Info:</p>
+
+  </div>
+  <div>
+    <p class="text-gray-600 mb-4">Your recipes:</p>
+    <div class="grid grid-cols-1 gap-4">
+      <div *ngFor="let recipe of userRecipes" class="bg-white rounded-md shadow-sm p-4 hover:shadow-md transition duration-200 ease-in-out">
+        <a [routerLink]="['/recipe', recipe.id]" class="text-lg font-medium text-gray-700 hover:underline">
+          {{ recipe.recipeName }}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button (click)="logOut()" class="w-full py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md font-medium">Log Out</button>

@@ -84,10 +84,12 @@ export class FirestoreService {
   async addRecipe(recipe: Recipe){
     try {
       await setDoc(doc(this.db, "recipes", recipe.id + ""),{
-        recipe: recipe.recipe,
-        description: recipe.description,
         id: recipe.id,
-        uid: recipe.uid
+        uid: recipe.uid,
+        recipe: recipe.recipeName,
+        description: recipe.description,
+        ingredients: recipe.ingredients,
+        steps: recipe.steps,
       });
       return true;
     } catch (error) {
