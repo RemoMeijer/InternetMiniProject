@@ -4,6 +4,7 @@ import initializeApp = firebase.initializeApp;
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, setDoc, query, where, getDocs, getDoc, collection } from "firebase/firestore"
 import {Recipe} from "./objects/recipe";
+import {BehaviorSubject} from "rxjs";
 
 
 @Injectable({
@@ -24,6 +25,8 @@ export class FirestoreService {
   private readonly auth: any;
   private loggedUser: any;
   private readonly db: any;
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  isLoggedIn = this.isLoggedInSubject.asObservable();
 
 
   getLoggedUser(){
@@ -31,11 +34,17 @@ export class FirestoreService {
       return this.loggedUser;
     }
   }
+
   constructor() {
     this.app = initializeApp(this.firebaseConfig);
     this.auth = getAuth(this.app)
     onAuthStateChanged(this.auth, (user) => {
-      this.loggedUser = user;
+      if (user) {
+        this.loggedUser = user;
+        this.isLoggedInSubject.next(true);
+      } else {
+        this.isLoggedInSubject.next(false);
+      }
     });
     this.db = getFirestore(this.app)
   }
@@ -62,6 +71,7 @@ export class FirestoreService {
       return true;
     } catch (error) {
       console.log(error);
+      this.isLoggedInSubject.next(false);
       return false;
     }
   }

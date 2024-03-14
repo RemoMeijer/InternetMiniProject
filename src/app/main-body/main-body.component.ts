@@ -25,16 +25,6 @@ export class MainBodyComponent implements OnInit  {
     this.getRecipes()
   }
 
-  createRecipe() {
-    let recipe: Recipe = {
-      recipe: "Appeltaart",
-      description: "Goede appeltaart",
-      id: Math.floor(Math.random() * 100000),
-      uid: this.firebaseService.getLoggedUser().uid
-    }
-    this.firebaseService.addRecipe(recipe);
-  }
-
   getRandomIntegerBetween(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -44,9 +34,5 @@ export class MainBodyComponent implements OnInit  {
       .then((recipes) => {
         this.recipeList = recipes
       })
-  }
-
-  gotoRecipePage(recipe: Recipe) {
-    this.router.navigate(['/recipes', recipe.id]);
   }
 }
