@@ -1,68 +1,85 @@
-<div class="grid grid-cols-2">
+<div class="grid grid-cols-2 text-color">
   <div class="mt-4 ms-4 text-xs">
-    <label>Add:</label>
-    <div class="grid grid-cols-2 gap-y-2 ms-4 mt-2">
-      <label>Name of Recipe</label>
-      <input type="text" id="recipeName" [(ngModel)]="recipe.recipeName">
-      <label>Description:</label>
-      <input type="text" id="recipeDescription" [(ngModel)]="recipe.description">
 
+    <!-- Name description -->
+    <label class="font-bold text-lg">Add:</label>
+    <div class="grid grid-cols-3 gap-y-2 ms-4 mt-2 secondary-background p-3 rounded">
+      <label>Name of Recipe</label>
+      <input class="input-field-style col-span-2 border-gray-500 border-2" type="text" id="recipeName" [(ngModel)]="recipe.recipeName">
+      <label>Description:</label>
+      <input class="input-field-style col-span-2 border-gray-500 border-2" type="text" id="recipeDescription" [(ngModel)]="recipe.description">
     </div>
-    <div class="grid-cols-4 grid ms-4 my-4">
+
+    <!-- Ingredients  -->
+    <div class="grid-cols-4 grid ms-4 my-4 p-3">
       <div class="col-span-1">
         <label>Ingredients:</label>
       </div>
       <div class="col-span-3 grid grid-cols-2 gap-y-2 ms-4">
         <label>Ingredient name:</label>
-        <input type="text" id="ingredientName" [(ngModel)]="currentIngredient.ingredient"
-               class="border-gray-500 border-2">
+        <input type="text" id="ingredientName" [(ngModel)]="currentIngredient.ingredient" class="input-field-style">
         <label>Ingredient Amount:</label>
-        <input type="number" id="ingredientAmount" [(ngModel)]="currentIngredient.amount"
-               class="border-gray-500 border-2">
-        <label>Ingredient Unit</label>
-        <input type="text" id="ingredientUnit" [(ngModel)]="currentIngredient.unit" class="border-gray-500 border-2">
-        <button class="col-span-2" (click)="addIngredients()">Add ingredient</button>
+        <input type="number" id="ingredientAmount" [(ngModel)]="currentIngredient.amount" class="input-field-style">
+        <label>Ingredient Unit: </label>
+        <input type="text" id="ingredientUnit" [(ngModel)]="currentIngredient.unit" class="input-field-style">
+        <button class="button-style col-span-2 mt-3" (click)="addIngredients()">Add ingredient</button>
       </div>
     </div>
-    <div class="grid-cols-4 grid ms-4 my-4">
+
+    <!-- Steps -->
+    <div class="grid-cols-4 grid ms-4 my-4 secondary-background rounded p-3">
       <div>
         <label>Step:</label>
       </div>
       <div class="col-span-3 grid grid-cols-2 gap-y-2 ms-4">
         <label>Step description:</label>
-        <input type="text" id="stepDescription" [(ngModel)]="step" class="border-gray-500 border-2">
-        <button class="col-span-3" (click)="addStep()">Add step</button>
+        <input type="text" id="stepDescription" [(ngModel)]="step" class="input-field-style">
+        <button class="button-style col-span-2 mt-3" (click)="addStep()">Add step</button>
       </div>
     </div>
-    <div class="grid grid-cols-3 ms-4 gap-y-2">
+
+    <!-- Tags -->
+    <div class="grid grid-cols-4 ms-4 gap-y-2 p-3">
       <div>
         <label>Tag:</label>
       </div>
-      <div class="col-span-2">
-        <input type="text" [(ngModel)]="tag">
-      </div>
-      <div class="col-span-3 w-max">
-        <button (click)="addTag()">Add Tag</button>
+      <div class="col-span-3 grid grid-cols-2 gap-y-2 ms-4">
+        <label></label>
+        <input type="text" [(ngModel)]="tag" class="input-field-style">
+        <button class="button-style col-span-2 mt-3" (click)="addTag()">Add Tag</button>
       </div>
     </div>
   </div>
-  <div class="text-xs my-4">
-    <label>Recipe:</label>
-    <p>{{recipe.recipeName}}</p>
-    <p>{{recipe.description}}</p>
-    <div *ngIf="recipe.ingredients.length != 0" class="mb-2">
-      <p>Ingredients:</p>
+
+  <!-- recipe mirror -->
+  <div class="text-xs my-4 mx-12">
+    <label class="bold text-lg">Recipe:</label>
+    <div class="ms-4 mt-4">
+      <p>{{recipe.recipeName}}</p>
+      <p>{{recipe.description}}</p>
+      <div *ngIf="recipe.ingredients.length != 0" class="mb-2 mt-4">
+        <p>Ingredients:</p>
+      </div>
+      <div class="ms-2" *ngFor="let singleIngredient of recipe.ingredients">
+        <p>{{singleIngredient.ingredient}} {{singleIngredient.amount}} {{singleIngredient.unit}}</p>
+      </div>
+      <div *ngIf="recipe.steps.length != 0" class="my-2 mt-4">
+        Steps:
+      </div>
+      <div class="ms-2" *ngFor="let step; let i = index of recipe.steps">
+        <p>Step {{i+ 1}}: {{step}}</p>
+      </div>
+      <div *ngIf="recipe.tags.length != 0" class="my-2 mt-4">
+        Tags:
+      </div>
+      <div class="ms-2" *ngFor="let tag of recipe.tags">
+        <p>{{tag}}</p>
+      </div>
     </div>
-    <div class="" *ngFor="let singleIngredient of recipe.ingredients">
-      <p>{{singleIngredient.ingredient}} {{singleIngredient.amount}} {{singleIngredient.unit}}</p>
-    </div>
-    <div *ngIf="recipe.steps.length != 0" class="mb-2">
-      Ingredients
-    </div>
-    <div *ngFor="let steps of recipe.steps">
-      <p>{{step}}</p>
-    </div>
+
   </div>
 </div>
 
-<button (click)="submitRecipe()">Submit recipe</button>
+<div class="justify-center flex my-5">
+  <button class="rounded px-5 py-2 text-color" style="background-color: rgb(157, 188, 152);" (click)="submitRecipe()">Submit recipe</button>
+</div>

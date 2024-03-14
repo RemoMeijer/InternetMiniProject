@@ -86,7 +86,7 @@ export class FirestoreService {
       await setDoc(doc(this.db, "recipes", recipe.id + ""),{
         id: recipe.id,
         uid: recipe.uid,
-        recipe: recipe.recipeName,
+        recipeName: recipe.recipeName,
         description: recipe.description,
         ingredients: recipe.ingredients,
         steps: recipe.steps,

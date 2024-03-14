@@ -2,3 +2,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.main-background {
+  background-color: rgb(249, 239, 219);
+}
+
+.secondary-background {
+  background-color: rgb(235, 217, 180);
+}
+
+.third-background {
+  background-color: rgb(157, 188, 152);
+}
+
+.dark-background {
+  background-color: rgb(99, 136, 137);
+}
+
+.text-color {
+  color: rgb(99, 136, 137)
+}
+
+.input-field-style {
+  @apply border-b-teal-500 border rounded-sm
+}
+
+.button-style {
+  background-color: rgb(157, 188, 152);
+  @apply py-1.5 mx-24 rounded
+}
+
+hr.recipe {
+  border: 4px;
+  background-color: rgb(116, 73, 62);
+}

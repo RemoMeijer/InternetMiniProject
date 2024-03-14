@@ -72,19 +72,16 @@ export class RecipeMakerComponent implements OnInit {
   }
 
   addIngredients() {
-    // if (this.currentIngredient.ingredient != "" &&
-    //     this.currentIngredient.amount !<= 0) {
-
+    if (this.currentIngredient.ingredient == "") {
+      return;
+    }
       this.recipe.ingredients.push(this.currentIngredient);
 
       this.currentIngredient = {
         ingredient: '',
-        amount: -1,
+        amount: NaN,
         unit: '',
       };
-    // } else {
-    //   console.error("Invalid ingredient")
-    // }
   }
 
   addStep() {
