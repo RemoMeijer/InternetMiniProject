@@ -37,8 +37,8 @@
   <div class="col-span-2 my-7 mx-3 text-xs">
     <div *ngIf="recipe.tags[0] != '' && recipe.tags.length > 0" class="grid grid-cols-12">
       <p class="col-span-1">Tags: </p>
-      <div *ngFor="let tag of recipe.tags" class="col-span-10">
-        <p class="dark-background text-white px-1 w-min mx-2">{{ tag }}</p>
+      <div *ngFor="let tag of recipe.tags" class="justify-center flex">
+        <p class="dark-background text-white px-1 mx-2">{{ tag }}</p>
       </div>
     </div>
   </div>
