@@ -1,17 +1,21 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Recipe} from "../objects/recipe";
 import {FirestoreService} from "../firestore.service";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-recipe-detail-page',
   standalone: true,
-  imports: [],
+  imports: [
+    NgForOf,
+    NgIf
+  ],
   templateUrl: './recipe-detail-page.component.html',
   styleUrl: './recipe-detail-page.component.css'
 })
 export class RecipeDetailPageComponent implements OnInit {
-  protected recipe: Recipe = {
+  recipe: Recipe = {
     id: 0,
     uid: '',
     recipeName: '',
@@ -24,6 +28,7 @@ export class RecipeDetailPageComponent implements OnInit {
   private recipeID: number = 0;
 
     constructor(private route: ActivatedRoute,
+                private router: Router,
                 private firestore: FirestoreService) {}
 
 
@@ -42,9 +47,11 @@ export class RecipeDetailPageComponent implements OnInit {
           return recipe;
         }
       }
+      this.router.navigate(['/'])
       return this.recipe;
-
-
     }
 
+  goToUser() {
+    this.router.navigate(['./user', this.recipe.uid])
+  }
 }

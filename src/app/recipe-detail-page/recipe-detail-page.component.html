@@ -1,2 +1,46 @@
-<h1>Recipe for {{recipe.recipeName}}</h1>
-<h1>{{recipe.description}}</h1>
+<div class="grid grid-cols-4 ms-4 text-color">
+  <div class="col-span-2">
+    <div class="grid grid-cols-2 my-5 justify-center">
+      <p class="text-2xl">Recipe for: {{ recipe.recipeName }}</p>
+      <p class="text-sm mt-2 hover:cursor-pointer" (click)="goToUser()">by: {{recipe.uid}}</p>
+    </div>
+
+    <!-- description -->
+    <div class="secondary-background  mb-3 ps-4 rounded-sm py-4">
+      <h1 class="text-xl font-bold"> Description: </h1>
+      <p>{{ recipe.description }}</p>
+    </div>
+
+    <!-- ingredients -->
+    <div class="ps-4 my-5">
+      <div *ngIf="recipe.ingredients.length > 0" class="mb-2">
+        <h1 class="font-bold">Ingredients:</h1>
+      </div>
+      <div *ngFor="let ingredient of recipe.ingredients" class="my-0.5 ms-1">
+        <input type="checkbox" id="ingredient"/>
+        <label for="ingredient"> {{ingredient.ingredient}} {{ingredient.amount}} {{ingredient.unit}}</label>
+      </div>
+    </div>
+
+    <!-- steps -->
+    <div class="ps-4 secondary-background rounded-sm py-4">
+      <div *ngIf="recipe.steps.length > 0">
+        <h1 class="font-bold">Steps: </h1>
+      </div>
+      <div *ngFor="let step of recipe.steps" class="my-0.5 ms-1">
+        <input type="checkbox" id="step"/>
+        <label for="step"> {{step}} </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-span-2 my-7 mx-3 text-xs">
+    <div *ngIf="recipe.tags[0] != '' && recipe.tags.length > 0" class="grid grid-cols-12">
+      <p class="col-span-1">Tags: </p>
+      <div *ngFor="let tag of recipe.tags" class="col-span-10">
+        <p class="dark-background text-white px-1 w-min mx-2">{{ tag }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+

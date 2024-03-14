@@ -43,12 +43,21 @@ export class RecipeMakerComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if (this.fireStoreService.getLoggedUser() == null) {
-      this.router.navigate(['/login'])
-    }
+    setTimeout(() => {
+      if (this.fireStoreService.getLoggedUser() == null) {
+        this.router.navigate(['/login'])
+      }
+    }, 500)
+
   }
 
  submitRecipe(){
+    if (this.recipe.steps.length == 0) {
+      this.recipe.steps[0] = ""
+    }
+    if (this.recipe.tags.length == 0) {
+      this.recipe.tags[0] = ""
+    }
     this.createRecipe(this.recipe)
  }
 

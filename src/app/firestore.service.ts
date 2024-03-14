@@ -90,6 +90,7 @@ export class FirestoreService {
         description: recipe.description,
         ingredients: recipe.ingredients,
         steps: recipe.steps,
+        tags: recipe.tags
       });
       return true;
     } catch (error) {

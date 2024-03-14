@@ -1,3 +1,5 @@
-<div class="flex main-background justify-center" *ngFor="let recipe of recipeList">
-  <div class="p-4 secondary-background rounded-md w-1/2 my-5" [routerLink]="['/recipe', recipe.id]">{{recipe.recipeName}}</div>
+<div class="text-color">
+  <div class="flex main-background justify-center" *ngFor="let recipe of recipeList">
+    <div class="p-4 secondary-background rounded-md w-1/2 my-5" [routerLink]="['/recipe', recipe.id]">{{recipe.recipeName}}</div>
+  </div>
 </div>
