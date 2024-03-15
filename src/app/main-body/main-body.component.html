@@ -1,5 +1,8 @@
-<div class="text-color">
-  <div class="flex main-background justify-center" *ngFor="let recipe of recipeList">
-    <div class="p-4 secondary-background rounded-md w-1/2 my-5" [routerLink]="['/recipe', recipe.id]">{{recipe.recipeName}}</div>
+<div class="text-color grid grid-cols-2 ">
+  <div class="main-background flex justify-center" *ngFor="let recipe of recipeList">
+    <div class=" ease-in-out hover:shadow-md cursor-pointer p-4 secondary-background rounded-md w-2/3 my-5" [routerLink]="['/recipe', recipe.id]">
+      <p class="text-xl">{{recipe.recipeName}}</p>
+      <p class="text-sm">{{recipe.description}}</p>
+    </div>
   </div>
 </div>

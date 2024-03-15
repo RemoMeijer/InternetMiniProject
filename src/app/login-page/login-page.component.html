@@ -8,8 +8,12 @@
       <label for="password" class="w-1/4 text-sm font-medium">Password:</label>
       <input type="password" id="password" name="password" [(ngModel)]="password" required class="flex-grow px-2 py-1 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
     </div>
-    <button type="submit" class="btn btn-primary border border-gray-500">Login</button>
+    <div class="justify-center flex">
+      <button type="submit" class="button-style w-min px-5">Login</button>
+    </div>
   </form>
-  <button (click)="makeUser(email, password)" class="mt-4 btn btn-outline border border-gray-500 ">New User</button>
-  <div *ngIf="success" class="mt-4 text-green-500">{{ success }}</div>
+  <div class="justify-center flex">
+    <button (click)="makeUser(email, password)" class="button-style mt-5 px-1.5">New User</button>
+  </div>
+  <div *ngIf="success" class="mt-4 text-red">{{ success }}</div>
 </div>

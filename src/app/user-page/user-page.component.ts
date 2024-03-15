@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../objects/user";
 import {FirestoreService} from "../firestore.service";
-import {Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {Recipe} from "../objects/recipe";
-import {NgForOf, NgOptimizedImage} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {Subscription} from "rxjs";
 
 @Component({
@@ -12,7 +12,8 @@ import {Subscription} from "rxjs";
   imports: [
     NgForOf,
     RouterLink,
-    NgOptimizedImage
+    NgOptimizedImage,
+    NgIf
   ],
   templateUrl: './user-page.component.html',
   styleUrl: './user-page.component.css'

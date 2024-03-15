@@ -63,7 +63,7 @@ export class RecipeMakerComponent implements OnInit {
 
   async createRecipe(recipe: Recipe) {
     let fullRecipe: Recipe = {
-      id: Math.floor(Math.random() * 100000),
+      id: Math.floor(Math.random() * 100000000),
       uid: this.fireStoreService.getLoggedUser().uid,
       recipeName: recipe.recipeName,
       description: recipe.description,
@@ -108,6 +108,24 @@ export class RecipeMakerComponent implements OnInit {
       this.tag = ""
     } else {
       console.error("Invalid tag!")
+    }
+  }
+
+  addIngredientByEnter($event: KeyboardEvent) {
+    if ($event.key == "Enter") {
+      this.addIngredients();
+    }
+  }
+
+  addStepByEnter($event: KeyboardEvent) {
+    if ($event.key == "Enter") {
+      this.addStep();
+    }
+  }
+
+  addTagByEnter($event: KeyboardEvent) {
+    if ($event.key == "Enter") {
+      this.addTag();
     }
   }
 }

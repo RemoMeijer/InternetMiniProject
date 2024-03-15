@@ -53,6 +53,8 @@ export class NavbarComponent implements OnInit {
     // Extra check if logged in
     if (this.loggedIn) {
       this.router.navigate(['newRecipe'])
+    } else {
+      this.router.navigate(['login'])
     }
   }
 

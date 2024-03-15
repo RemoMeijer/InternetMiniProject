@@ -17,11 +17,11 @@
       </div>
       <div class="col-span-3 grid grid-cols-2 gap-y-2 ms-4">
         <label>Ingredient name:</label>
-        <input type="text" id="ingredientName" [(ngModel)]="currentIngredient.ingredient" class="input-field-style">
+        <input type="text" id="ingredientName" (keydown)="addIngredientByEnter($event)" [(ngModel)]="currentIngredient.ingredient" class="input-field-style">
         <label>Ingredient Amount:</label>
-        <input type="number" id="ingredientAmount" [(ngModel)]="currentIngredient.amount" class="input-field-style">
+        <input type="number" min="0" id="ingredientAmount" (keydown)="addIngredientByEnter($event)" [(ngModel)]="currentIngredient.amount" class="input-field-style">
         <label>Ingredient Unit: </label>
-        <input type="text" id="ingredientUnit" [(ngModel)]="currentIngredient.unit" class="input-field-style">
+        <input type="text" id="ingredientUnit" (keydown)="addIngredientByEnter($event)"  [(ngModel)]="currentIngredient.unit" class="input-field-style">
         <button class="button-style col-span-2 mt-3" (click)="addIngredients()">Add ingredient</button>
       </div>
     </div>
@@ -33,7 +33,7 @@
       </div>
       <div class="col-span-3 grid grid-cols-2 gap-y-2 ms-4">
         <label>Step description:</label>
-        <input type="text" id="stepDescription" [(ngModel)]="step" class="input-field-style">
+        <input type="text" id="stepDescription" (keydown)="addStepByEnter($event)" [(ngModel)]="step" class="input-field-style">
         <button class="button-style col-span-2 mt-3" (click)="addStep()">Add step</button>
       </div>
     </div>
@@ -45,7 +45,7 @@
       </div>
       <div class="col-span-3 grid grid-cols-2 gap-y-2 ms-4">
         <label></label>
-        <input type="text" [(ngModel)]="tag" class="input-field-style">
+        <input type="text" (keydown)="addTagByEnter($event)" [(ngModel)]="tag" class="input-field-style">
         <button class="button-style col-span-2 mt-3" (click)="addTag()">Add Tag</button>
       </div>
     </div>
