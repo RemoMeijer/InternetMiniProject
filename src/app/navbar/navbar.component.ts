@@ -44,13 +44,11 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['newRecipe'])
   }
 
-  onKeyDown(event: KeyboardEvent) {
-    if (event.key == 'Enter') {
-      this.executeSearch()
+  search(event: KeyboardEvent) {
+    if(this.searchTerm == ''){
+      this.firestore.returnAll();
+      return;
     }
-  }
-
-  private executeSearch() {
-
+    this.firestore.getMainPageRecipe(this.searchTerm)
   }
 }

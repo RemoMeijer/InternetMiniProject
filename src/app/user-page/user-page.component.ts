@@ -4,6 +4,7 @@ import {FirestoreService} from "../firestore.service";
 import {Router, RouterLink} from "@angular/router";
 import {Recipe} from "../objects/recipe";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-user-page',
@@ -25,12 +26,13 @@ export class UserPageComponent implements OnInit {
   userRecipes: Recipe[] = []
 
   constructor(private firestoreService: FirestoreService,
-              private route: Router) { }
+              private router: Router) { }
   ngOnInit(): void {
     if(this.firestoreService.getLoggedUser() == null) {
-      this.route.navigate(['']);
+      this.router.navigate(['']);
       return
     }
+
     if (this.firestoreService.getLoggedUser().displayName != null) {
       this.user.name = this.firestoreService.getLoggedUser().displayName;
     } else {
@@ -55,12 +57,12 @@ export class UserPageComponent implements OnInit {
   logOut() {
     this.firestoreService.logOut().then(r => {
       if (r) {
-        this.route.navigate(['']);
+        this.router.navigate(['']);
       }
     })
   }
 
   goToUserSettings() {
-    this.route.navigate(['settings', this.firestoreService.getLoggedUser().uid])
+    this.router.navigate(['settings', this.firestoreService.getLoggedUser().uid])
   }
 }

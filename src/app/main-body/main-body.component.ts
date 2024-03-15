@@ -1,8 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FirestoreService} from "../firestore.service";
 import {Recipe} from "../objects/recipe";
 import {NgForOf} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
+import {Subscription} from "rxjs";
+import {
+  castAsAny
+} from "@angular/compiler-cli/src/transformers/jit_transforms/initializer_api_transforms/transform_api";
 
 @Component({
   selector: 'app-main-body',
@@ -14,21 +18,29 @@ import {Router, RouterLink} from "@angular/router";
   templateUrl: './main-body.component.html',
   styleUrl: './main-body.component.css'
 })
-export class MainBodyComponent implements OnInit  {
+export class MainBodyComponent implements OnInit, OnDestroy {
+
   protected recipeList: Recipe[] = [];
+  subscription: any;
 
 
   constructor(private firebaseService: FirestoreService,
               private router: Router) {}
 
+
+
   ngOnInit(): void {
-    this.getRecipes()
+     this.subscription = this.firebaseService.recipeList$.subscribe((newRecipes) => {
+      this.recipeList = newRecipes;
+    })
+
+    this.firebaseService.getAllRecipes()
+      .then((recipeList) => {
+        this.recipeList = recipeList;
+      })
   }
 
-  async getRecipes() {
-    this.firebaseService.getAllRecipes()
-      .then((recipes) => {
-        this.recipeList = recipes
-      })
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

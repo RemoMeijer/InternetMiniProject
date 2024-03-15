@@ -7,9 +7,9 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from "firebase/auth";
-import {collection, doc, getDocs, getFirestore, setDoc} from "firebase/firestore"
+import {collection, doc, getDocs, getFirestore, setDoc, where, query} from "firebase/firestore"
 import {Recipe} from "./objects/recipe";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import initializeApp = firebase.initializeApp;
 
 @Injectable({
@@ -28,10 +28,15 @@ export class FirestoreService {
 
   private readonly app: any;
   private readonly auth: any;
-  private loggedUser: any;
   private readonly db: any;
+
+  private allRecipes: Recipe[] = [];
+  private recipeListSubject = new Subject<Recipe[]>();
+  recipeList$ = this.recipeListSubject.asObservable();
+
+  private loggedUser: any;
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
-  isLoggedIn = this.isLoggedInSubject.asObservable();
+  public isLoggedIn = this.isLoggedInSubject.asObservable();
 
 
   getLoggedUser(){
@@ -105,11 +110,35 @@ export class FirestoreService {
      querySnapshot.forEach( (doc) => {
        recipeList.push(doc.data() as Recipe)
      })
-    return recipeList
+    this.allRecipes = recipeList;
+    return recipeList;
+  }
+
+  returnAll(){
+    this.recipeListSubject.next(this.allRecipes);
   }
 
   async getMainPageRecipe(searchTerm: string) {
+    const returnList: Recipe[] = [];
+    const searchTermLowerCase = searchTerm.toLowerCase();
 
+    for (let recipe of this.allRecipes) {
+      const recipeNameLowerCase = recipe.recipeName.toLowerCase();
+      // Search names
+      if (recipeNameLowerCase.includes(searchTermLowerCase)) {
+        returnList.push(recipe);
+      } else {
+        // Search tags
+        for (let tag of recipe.tags) {
+          const tagLowerCase = tag.toLowerCase();
+          if (tagLowerCase.includes(searchTermLowerCase)) {
+            returnList.push(recipe);
+            break;
+          }
+        }
+      }
+    }
+    this.recipeListSubject.next(returnList);
   }
 
   async logOut() {
