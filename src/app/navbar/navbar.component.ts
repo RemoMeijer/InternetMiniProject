@@ -20,35 +20,51 @@ export class NavbarComponent implements OnInit {
   searchTerm: string = "";
 
   constructor(private router: Router,
-              private firestore: FirestoreService) { }
+              private firestore: FirestoreService) {}
 
   ngOnInit(): void {
+    // Check if user is loggedIn. Notify this.loggedIn this changes
+    // If logged in, "login" button will be replaced by "user page" button
     this.firestore.isLoggedIn.subscribe(loggedIn => {
       this.loggedIn = loggedIn;
     })
   }
 
+  // Go to home page
   goToHome() {
     this.router.navigate(['']);
   }
 
+  // Go to login page
   goToLogin() {
     this.router.navigate(['login']);
   }
 
+  // Go to the users page
   goToUserPage() {
-    this.router.navigate(['user', this.firestore.getLoggedUser().uid])
+    // Extra check if logged in
+    if (this.loggedIn) {
+      this.router.navigate(['user', this.firestore.getLoggedUser().uid])
+    }
   }
 
+  // Go to make a new recipe
   goToRecipeMaker() {
-    this.router.navigate(['newRecipe'])
+    // Extra check if logged in
+    if (this.loggedIn) {
+      this.router.navigate(['newRecipe'])
+    }
   }
 
-  search(event: KeyboardEvent) {
+  // Search with the search bar
+  search() {
+    // Display everything when nothing is in the search bar
     if(this.searchTerm == ''){
       this.firestore.returnAll();
       return;
     }
-    this.firestore.getMainPageRecipe(this.searchTerm)
+
+    // Display items which names or tags match with searchTerm
+    this.firestore.searchRecipes(this.searchTerm)
   }
 }

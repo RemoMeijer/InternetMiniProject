@@ -15,6 +15,7 @@ import {NgIf} from "@angular/common";
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'
 })
+
 export class LoginPageComponent {
   email: string = '';
   password: string = '';
@@ -23,7 +24,7 @@ export class LoginPageComponent {
   constructor(private firestoreService: FirestoreService) {}
 
   async makeUser(email: string, password: string) {
-
+    // Make a new user
     const success = await this.firestoreService.newUser(email, password);
     if (success) {
       this.success = "Logged in!"
@@ -33,13 +34,14 @@ export class LoginPageComponent {
     }
   }
 
+  // Sign in an existing user
   async signIn(email: string, password: string) {
-    const success= await this.firestoreService.signIn(email, password);
-    if (success) {
-      this.success = "Logged in!"
-      // todo route to home
-    } else {
-      this.success = "Login failed :("
-    }
+    this.firestoreService.signIn(email, password).then((success) => {
+      if (success) {
+        this.success = "Logged in!"
+      } else {
+        this.success = "Login failed :("
+      }
+    });
   }
 }

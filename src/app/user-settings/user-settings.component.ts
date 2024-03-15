@@ -25,25 +25,31 @@ export class UserSettingsComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
+    // Check if logged in
     if (this.firestoreService.getLoggedUser() == null) {
       this.router.navigate(['/login'])
     }
+    // Check if user has a name, if so, display
     if(this.firestoreService.getLoggedUser().displayName != null) {
       this.user.name = this.firestoreService.getLoggedUser().displayName;
     }
   }
 
   updateName() {
+    // Update users name in the db
     updateProfile(this.firestoreService.getLoggedUser(), {
       displayName: this.newName,  // Use newName from the input field
     }).then(() => {
+      // Update name on page
       console.log("Profile updated!");
       this.user.name = this.firestoreService.getLoggedUser().displayName;
     }).catch((error) => {
+      // Updating name went wrong
       console.error(error);
     });
   }
 
+  // Log the user out
   logOut() {
     this.firestoreService.logOut().then(r => {
       if (r) {

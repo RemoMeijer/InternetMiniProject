@@ -23,23 +23,23 @@ export class MainBodyComponent implements OnInit, OnDestroy {
   protected recipeList: Recipe[] = [];
   subscription: any;
 
-
   constructor(private firebaseService: FirestoreService,
               private router: Router) {}
 
-
-
   ngOnInit(): void {
-     this.subscription = this.firebaseService.recipeList$.subscribe((newRecipes) => {
+    // Subscribe this recipe list, so it updates on changes
+    this.subscription = this.firebaseService.recipeList$.subscribe((newRecipes) => {
       this.recipeList = newRecipes;
     })
 
+    // Fetch all recipes in the db, to display on the home screen
     this.firebaseService.getAllRecipes()
       .then((recipeList) => {
         this.recipeList = recipeList;
       })
   }
 
+  // Unsubscribe from recipe list
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }

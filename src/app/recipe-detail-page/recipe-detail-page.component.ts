@@ -27,30 +27,38 @@ export class RecipeDetailPageComponent implements OnInit {
 
   private recipeID: number = 0;
 
-    constructor(private route: ActivatedRoute,
-                private router: Router,
-                private firestore: FirestoreService) {}
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private firestore: FirestoreService) {
+  }
 
 
-    ngOnInit(): void {
-      this.route.paramMap.subscribe(async params => {
-        // @ts-ignore
-        this.recipeID = +params.get('id');
-        // Fetch recipe details based on the id (replace with your data fetching logic)
-        this.recipe = await this.fetchRecipeDetails();
-      });
-    }
-    async fetchRecipeDetails() {
-      let recipeList = await this.firestore.getAllRecipes()
-      for (let recipe of recipeList) {
-        if (recipe.id == this.recipeID ) {
-          return recipe;
-        }
+  ngOnInit(): void {
+    // Get the id given with the route
+    this.route.paramMap.subscribe(async params => {
+      // Not really a fan of the !, but it's needed
+      this.recipeID = +params.get('id')!;
+      // Fetch recipe details based on the id (replace with your data fetching logic)
+      this.fetchRecipeDetails();
+    });
+  }
+
+  // Get the recipe based on ID
+  async fetchRecipeDetails() {
+    // todo just query on ID in firestore, this works ok, but not ideal
+    let recipeList = await this.firestore.getAllRecipes()
+    for (let recipe of recipeList) {
+      if (recipe.id == this.recipeID) {
+        // We found the recipe
+        this.recipe = recipe;
+        return
       }
-      this.router.navigate(['/'])
-      return this.recipe;
     }
+    // We failed to find the recipe, return to home screen
+    this.router.navigate(['/'])
+  }
 
+  // Go to user of recipe
   goToUser() {
     this.router.navigate(['./user', this.recipe.uid])
   }

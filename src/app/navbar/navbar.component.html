@@ -2,7 +2,7 @@
   <div class="container mx-auto px-4 py-2 flex justify-between items-center">
     <a class="text-white text-xl font-bold" routerLink="/">Recipe Share!</a>
     <div>
-      <input (keyup)="search($event)" id="searchbar" placeholder="search" [(ngModel)]="searchTerm" class="rounded-2xl w-max px-4 main-background text-color">
+      <input (keyup)="search()" id="searchbar" placeholder="search" [(ngModel)]="searchTerm" class="rounded-2xl w-max px-4 main-background text-color">
     </div>
     <div class="flex space-x-4">
       <button class="btn btn-outline text-white" (click)="goToRecipeMaker()">Create Recipe</button>

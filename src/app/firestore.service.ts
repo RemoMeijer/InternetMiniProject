@@ -39,7 +39,7 @@ export class FirestoreService {
   public isLoggedIn = this.isLoggedInSubject.asObservable();
 
 
-  getLoggedUser(){
+  getLoggedUser() {
     if (this.loggedUser != null) {
       return this.loggedUser;
     }
@@ -66,13 +66,13 @@ export class FirestoreService {
           this.loggedUser = userCredential.user;
         })
       return true;
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       return false;
     }
   }
 
-  async signIn(email: string, password: string){
+  async signIn(email: string, password: string) {
     try {
       await signInWithEmailAndPassword(this.auth, email, password)
         .then((userCredential) => {
@@ -86,9 +86,9 @@ export class FirestoreService {
     }
   }
 
-  async addRecipe(recipe: Recipe){
+  async addRecipe(recipe: Recipe) {
     try {
-      await setDoc(doc(this.db, "recipes", recipe.id + ""),{
+      await setDoc(doc(this.db, "recipes", recipe.id + ""), {
         id: recipe.id,
         uid: recipe.uid,
         recipeName: recipe.recipeName,
@@ -104,47 +104,64 @@ export class FirestoreService {
     }
   }
 
+  // Fetch all the recipes from the db, and update local recipe list
   async getAllRecipes() {
     const recipeList: Recipe[] = []
-     const querySnapshot = await getDocs(collection(this.db, "recipes"));
-     querySnapshot.forEach( (doc) => {
-       recipeList.push(doc.data() as Recipe)
-     })
+    const querySnapshot = await getDocs(collection(this.db, "recipes"));
+    querySnapshot.forEach((doc) => {
+      recipeList.push(doc.data() as Recipe)
+    })
+
+    // update local list
     this.allRecipes = recipeList;
+
+    // todo -> make everyone use the local list, not this method
     return recipeList;
   }
 
-  returnAll(){
+  getRecipeById() {
+    // todo
+  }
+
+  // Return all recipes
+  returnAll() {
     this.recipeListSubject.next(this.allRecipes);
   }
 
-  async getMainPageRecipe(searchTerm: string) {
+  // Get the recipes with the query of the searchbar
+  searchRecipes(searchTerm: string) {
     const returnList: Recipe[] = [];
     const searchTermLowerCase = searchTerm.toLowerCase();
 
+    // Loop trough recipes
+    // We use a pre-stored list of recipes, to minimize the queries on the db
     for (let recipe of this.allRecipes) {
-      const recipeNameLowerCase = recipe.recipeName.toLowerCase();
+      const recipeNameLowerCase: string = recipe.recipeName.toLowerCase();
       // Search names
       if (recipeNameLowerCase.includes(searchTermLowerCase)) {
         returnList.push(recipe);
       } else {
-        // Search tags
+        // No name found, search tags
         for (let tag of recipe.tags) {
           const tagLowerCase = tag.toLowerCase();
           if (tagLowerCase.includes(searchTermLowerCase)) {
             returnList.push(recipe);
+            // We don't want a recipe show up multiple times, so break
             break;
           }
         }
       }
     }
+    // Notify subscribers
     this.recipeListSubject.next(returnList);
   }
 
+  // Log the user out
   async logOut() {
     try {
       await signOut(this.auth);
       return true;
+      // Failed to log out
     } catch (error) {
       console.error(error);
       return false
